@@ -121,25 +121,29 @@ export default function LearnPage() {
               <button
                 key={lesson.id}
                 onClick={() => handleSelectLesson(lesson)}
-                className="flex w-full items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-left transition hover:border-cyan/40 hover:bg-white/[0.06] animate-fade-up"
+                className="group flex w-full items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-left transition-all duration-300 hover:border-cyan/40 hover:bg-white/[0.07] hover:-translate-y-0.5 hover:shadow-glow animate-fade-up"
                 style={{ animationDelay: `${i * 0.07}s` }}
               >
-                <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 font-display font-bold text-sm ${
-                  allDone ? 'border-sahel text-sahel' : 'border-sand/40 text-sand'
+                <div className={`relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 font-display font-bold text-sm transition-all ${
+                  allDone
+                    ? 'border-sahel bg-sahel/10 text-sahel shadow-[0_0_12px_rgba(91,140,78,0.4)]'
+                    : 'border-sand/40 text-sand group-hover:border-sand/70 group-hover:bg-sand/5'
                 }`}>
                   {allDone ? '✓' : lesson.level}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="font-display font-semibold text-white">{lesson.title}</div>
+                  <div className="font-display font-semibold text-white group-hover:text-sand transition-colors">
+                    {lesson.title}
+                  </div>
                   <div className="mt-0.5 text-xs text-white/40">{total} nœuds · {done}/{total} complétés</div>
-                  <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                  <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-cyan to-sahel transition-all duration-700"
-                      style={{ width: `${pct}%` }}
+                      style={{ width: `${pct || 0}%` }}
                     />
                   </div>
                 </div>
-                <span className="text-white/30">→</span>
+                <span className="text-white/25 transition-transform group-hover:translate-x-1 group-hover:text-cyan">→</span>
               </button>
             )
           })}
