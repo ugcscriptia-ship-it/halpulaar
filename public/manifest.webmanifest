@@ -1,0 +1,10 @@
+{
+  "name": "Halpulaar",
+  "short_name": "Halpulaar",
+  "description": "Apprends le Pulaar du Fouta Toro",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1026",
+  "theme_color": "#0B1026",
+  "icons": []
+}
