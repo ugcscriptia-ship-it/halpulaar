@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { useNavigate }      from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { LearnLayout }      from '@/components/templates/LearnLayout'
 import { LessonPath }       from '@/components/organisms/LessonPath'
 import { ExerciseRunner }   from '@/components/organisms/ExerciseRunner'
@@ -16,11 +16,13 @@ type Score = { correct: number; total: number }
 
 export default function LearnPage() {
   const navigate       = useNavigate()
+  const [searchParams]  = useSearchParams()
   const completedNodes = useProgressStore((s) => s.completedNodes)
   const completeNode   = useProgressStore((s) => s.completeNode)
 
-  const [mode, setMode]               = useState<Mode>('ludique')
-  const [view, setView]               = useState<View>('list')
+  const initMode = searchParams.get('tab') === 'academique' ? 'academique' : 'ludique'
+  const [mode, setMode]               = useState<Mode>(initMode)
+  const [view, setView]               = useState<View>(initMode === 'academique' ? 'flashcards' : 'list')
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(null)
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null)
   const [lastScore, setLastScore]     = useState<Score | null>(null)

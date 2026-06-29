@@ -15,9 +15,16 @@ export function useAudio() {
     if (!('speechSynthesis' in window)) return
     window.speechSynthesis.cancel()
     const utt = new SpeechSynthesisUtterance(text)
-    utt.lang    = 'fr-FR'
-    utt.rate    = 0.62
-    utt.pitch   = 0.88
+    // Pulaar n'a pas de voix dédiée — on prend la meilleure voix disponible
+    // en préférant pt-PT (proche phonétiquement) ou fr-FR en fallback
+    const voices = window.speechSynthesis.getVoices()
+    const preferred = voices.find(v => v.lang.startsWith('pt')) ??
+                      voices.find(v => v.lang.startsWith('fr')) ??
+                      voices[0]
+    if (preferred) utt.voice = preferred
+    utt.lang    = preferred?.lang ?? 'fr-FR'
+    utt.rate    = 0.55   // très lent pour bien articuler chaque syllabe
+    utt.pitch   = 0.85
     utt.volume  = 1
     utt.onstart = () => setPlaying(true)
     utt.onend   = () => setPlaying(false)

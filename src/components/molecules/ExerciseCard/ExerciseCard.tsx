@@ -26,7 +26,13 @@ export function ExerciseCard({ exercise, onAnswer }: ExerciseCardProps) {
             <p className="mt-1 font-pulaar text-white/70">{exercise.promptPulaar}</p>
           )}
         </div>
-        {exercise.audio && <AudioPlayButton src={exercise.audio} />}
+        {exercise.audio && (
+          <AudioPlayButton
+            src={exercise.audio}
+            text={exercise.options[exercise.answerIndex]}
+            label={`Écouter : ${exercise.options[exercise.answerIndex]}`}
+          />
+        )}
       </div>
 
       <div className="grid gap-2">

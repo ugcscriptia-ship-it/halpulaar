@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate }     from 'react-router-dom'
 import { SceneStage }      from '@/components/organisms/SceneStage'
-import { CharacterBubble } from '@/components/molecules/CharacterBubble'
 import { Mascot }          from '@/components/atoms/Mascot'
 import HiggsVideo          from '@/components/atoms/HiggsVideo'
 import { SCENES }          from '@/content'
@@ -144,21 +143,13 @@ export default function AdventurePage() {
           >
             <SceneStage
               scene={scene}
-              slots={{
-                overlay: (
-                  <CharacterBubble
-                    name={character.name}
-                    role={character.role}
-                    emoji={character.emoji}
-                  />
-                ),
-              }}
+              hideTitle
               onChoice={handleChoice}
             />
           </div>
 
-          <p className="mt-5 text-center text-xs text-white/15">
-            ⚠️ Dialogues PLACEHOLDER — à valider par un locuteur natif du Fouta Toro
+          <p className="mt-5 text-center text-[10px] text-white/10">
+            Dialogues en cours de validation par un locuteur natif
           </p>
         </div>
       </div>

@@ -5,4 +5,5 @@ export type SceneStageProps = {
   scene: Scene
   onChoice?: (index: number) => void
   slots?: SceneStageSlots
+  hideTitle?: boolean
 }

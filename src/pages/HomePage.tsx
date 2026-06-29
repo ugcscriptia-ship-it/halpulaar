@@ -79,7 +79,7 @@ const MODES = [
     tag: '#2DD4D4',
   },
   {
-    to: '/apprendre',
+    to: '/apprendre?tab=academique',
     icon: '📚',
     title: 'Académique',
     sub: 'A1 → B1',
