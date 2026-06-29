@@ -240,8 +240,25 @@ export default function HomePage() {
           ))}
         </div>
 
+        {/* Dictionnaire CTA */}
+        <Link
+          to="/dictionnaire"
+          className="group mt-10 flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-all hover:border-sand/40 hover:-translate-y-0.5 hover:shadow-glow-sand animate-fade-up"
+        >
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-sand/20 bg-sand/5 text-2xl">
+              📖
+            </div>
+            <div>
+              <div className="font-display font-semibold text-sand">Dictionnaire Pulaar–Français</div>
+              <div className="mt-0.5 text-xs text-white/40">{27} mots · phonétique · audio TTS · glyphes expliqués</div>
+            </div>
+          </div>
+          <span className="text-white/25 transition-transform group-hover:translate-x-1 group-hover:text-sand">→</span>
+        </Link>
+
         {/* Why Pulaar */}
-        <div className="mt-16 glass rounded-2xl p-8">
+        <div className="mt-10 glass rounded-2xl p-8">
           <div className="flex items-start gap-4">
             <div className="mt-0.5 text-3xl">🌍</div>
             <div>

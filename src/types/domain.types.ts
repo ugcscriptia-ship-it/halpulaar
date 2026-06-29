@@ -1,6 +1,6 @@
 export type Level = 'A1' | 'A2' | 'B1'
 
-export type VocabItem = { id: string; pulaar: string; fr: string; audio?: string }
+export type VocabItem = { id: string; pulaar: string; fr: string; audio?: string; phonetic?: string; category?: string }
 
 // Tranche runnable : 2 variants. Les autres (match, order, listen-write, speak)
 // s'ajoutent dans ExerciseRunner sans casser le type.

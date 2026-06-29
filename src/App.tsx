@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
-import HomePage     from './pages/HomePage'
-import LearnPage    from './pages/LearnPage'
-import AdventurePage from './pages/AdventurePage'
-import AuthPage     from './pages/AuthPage'
+import HomePage       from './pages/HomePage'
+import LearnPage      from './pages/LearnPage'
+import AdventurePage  from './pages/AdventurePage'
+import AuthPage       from './pages/AuthPage'
+import DictionaryPage from './pages/DictionaryPage'
 import { useAuthStore }     from './stores/useAuthStore'
 import { useProgressStore } from './stores/useProgressStore'
 import { pullProgressFromSupabase } from './data/progress'
@@ -29,8 +30,9 @@ export default function App() {
       <Routes>
         <Route path="/"          element={<HomePage />} />
         <Route path="/apprendre" element={<LearnPage />} />
-        <Route path="/aventure"  element={<AdventurePage />} />
-        <Route path="/auth"      element={<AuthPage />} />
+        <Route path="/aventure"       element={<AdventurePage />} />
+        <Route path="/dictionnaire"  element={<DictionaryPage />} />
+        <Route path="/auth"          element={<AuthPage />} />
         <Route path="*"          element={<NotFound />} />
       </Routes>
     </div>

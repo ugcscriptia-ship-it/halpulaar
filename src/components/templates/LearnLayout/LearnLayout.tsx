@@ -39,6 +39,13 @@ export function LearnLayout({ title, children, onBack }: LearnLayoutProps) {
           </button>
 
           <div className="flex items-center gap-2 flex-wrap justify-end">
+            <Link
+              to="/dictionnaire"
+              className="hidden sm:flex items-center gap-1 rounded-lg border border-white/10 bg-white/[0.02] px-2.5 py-1 text-xs text-white/40 transition hover:border-sand/30 hover:text-sand"
+              title="Dictionnaire Pulaar"
+            >
+              📖 Dico
+            </Link>
             <Streak days={streak} />
             <XPBadge xp={xp} />
 

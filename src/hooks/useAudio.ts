@@ -14,17 +14,20 @@ export function useAudio() {
   const speakTts = useCallback((text: string) => {
     if (!('speechSynthesis' in window)) return
     window.speechSynthesis.cancel()
-    const utt = new SpeechSynthesisUtterance(text)
-    // Pulaar n'a pas de voix dédiée — on prend la meilleure voix disponible
-    // en préférant pt-PT (proche phonétiquement) ou fr-FR en fallback
+    // Nettoie les glyphes Pulaar spéciaux que le TTS ne sait pas prononcer
+    const clean = text
+      .replace(/ɓ/gi, 'b').replace(/ɗ/gi, 'd').replace(/ŋ/gi, 'ng')
+      .replace(/ƴ/gi, 'y').replace(/'/g, '').replace(/-/g, ' ')
+    const utt = new SpeechSynthesisUtterance(clean)
     const voices = window.speechSynthesis.getVoices()
+    // Préfère pt-PT (voyelles ouvertes proches du Pulaar) ou fr-FR en fallback
     const preferred = voices.find(v => v.lang.startsWith('pt')) ??
                       voices.find(v => v.lang.startsWith('fr')) ??
                       voices[0]
     if (preferred) utt.voice = preferred
     utt.lang    = preferred?.lang ?? 'fr-FR'
-    utt.rate    = 0.55   // très lent pour bien articuler chaque syllabe
-    utt.pitch   = 0.85
+    utt.rate    = 0.52
+    utt.pitch   = 0.82
     utt.volume  = 1
     utt.onstart = () => setPlaying(true)
     utt.onend   = () => setPlaying(false)
