@@ -12,6 +12,10 @@ create table if not exists public.user_progress (
 
 alter table public.user_progress enable row level security;
 
+drop policy if exists "Lecture propre"   on public.user_progress;
+drop policy if exists "Insertion propre" on public.user_progress;
+drop policy if exists "Mise à jour propre" on public.user_progress;
+
 create policy "Lecture propre" on public.user_progress
   for select using (auth.uid() = user_id);
 

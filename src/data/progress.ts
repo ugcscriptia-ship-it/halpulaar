@@ -1,13 +1,6 @@
 import type { Progress } from '@/types/domain.types'
 import { supabase, hasSupabase } from '@/lib/supabase'
 
-// ┌─────────────────────────────────────────────────────────────────┐
-// │ COUTURE BACKEND (CLAUDE.md §6)                                   │
-// │ localStorage = source immédiate (sync, offline-capable).          │
-// │ Supabase = sync optionnel quand l'utilisateur est connecté.       │
-// │ Seul ce fichier change quand on bascule vers le backend.          │
-// └─────────────────────────────────────────────────────────────────┘
-
 const KEY = 'halpulaar.progress.v1'
 export const emptyProgress: Progress = { xp: 0, streak: 0, lastActive: null, completedNodes: [] }
 
@@ -21,9 +14,7 @@ export function loadProgress(): Progress {
 }
 
 export function saveProgress(p: Progress): void {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(p))
-  } catch { /* quota / mode privé */ }
+  try { localStorage.setItem(KEY, JSON.stringify(p)) } catch { /* quota / mode privé */ }
 }
 
 export async function pullProgressFromSupabase(userId: string): Promise<Progress | null> {
@@ -31,9 +22,9 @@ export async function pullProgressFromSupabase(userId: string): Promise<Progress
   try {
     const { data, error } = await supabase
       .from('user_progress')
-      .select('*')
+      .select('xp, streak, last_active, completed_nodes')
       .eq('user_id', userId)
-      .single()
+      .maybeSingle()
     if (error || !data) return null
     const remote: Progress = {
       xp: data.xp ?? 0,
@@ -57,6 +48,7 @@ export async function pullProgressFromSupabase(userId: string): Promise<Progress
 
 export function pushProgressToSupabase(userId: string, p: Progress): void {
   if (!hasSupabase) return
+  // Seuls des caractères ASCII dans ces valeurs — pas de risque header non-Latin1
   supabase.from('user_progress').upsert({
     user_id: userId,
     xp: p.xp,
@@ -64,5 +56,7 @@ export function pushProgressToSupabase(userId: string, p: Progress): void {
     last_active: p.lastActive,
     completed_nodes: p.completedNodes,
     updated_at: new Date().toISOString(),
-  }).then(() => {/* fire & forget */})
+  }).then(({ error }) => {
+    if (error) console.warn('[supabase] push progress:', error.message)
+  })
 }

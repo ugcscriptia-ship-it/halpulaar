@@ -5,10 +5,10 @@ const key = import.meta.env.VITE_SUPABASE_ANON_KEY ?? ''
 
 export const hasSupabase = !!(url && key)
 
-// createClient() plante si url/key sont vides — on utilise des valeurs
-// de substitution neutres quand Supabase n'est pas configuré.
-// hasSupabase === false → aucun appel réseau ne sera jamais effectué.
-export const supabase = createClient(
-  url  || 'https://placeholder.supabase.co',
-  key  || 'placeholder-anon-key',
-)
+// Garde-fou : createClient() plante sur des chaînes vides.
+// Quand Supabase n'est pas configuré, on crée un client inerte avec
+// des valeurs syntaxiquement valides — hasSupabase===false bloque
+// tout appel réseau en amont.
+export const supabase = hasSupabase
+  ? createClient(url, key)
+  : createClient('https://placeholder.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.placeholder.placeholder')

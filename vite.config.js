@@ -1,10 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'node:url';
-// NOTE backend: tant que Supabase n'est pas branché, ce bloc ne sert à rien.
-// Le jour où on l'ajoute (sync, communauté, tuteur IA), l'intégration Vercel
-// expose SUPABASE_URL / SUPABASE_ANON_KEY ; Vite exige le préfixe VITE_.
-// On mappe ici, et on ne lit JAMAIS SUPABASE_SERVICE_ROLE_KEY côté client.
+// Vercel expose SUPABASE_URL / SUPABASE_ANON_KEY sans préfixe VITE_ via
+// l'intégration native. On les mappe ici pour que Vite les injecte.
+// Les variables VITE_SUPABASE_* définies manuellement fonctionnent sans ce bloc.
+// SERVICE_ROLE_KEY ne doit JAMAIS apparaître ici (CLAUDE.md §6).
 var supabaseDefine = {};
 if (process.env.SUPABASE_URL)
     supabaseDefine['import.meta.env.VITE_SUPABASE_URL'] = JSON.stringify(process.env.SUPABASE_URL);
