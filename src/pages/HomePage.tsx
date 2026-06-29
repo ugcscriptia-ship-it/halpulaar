@@ -129,7 +129,7 @@ export default function HomePage() {
             <div className="relative">
               {/* Aura dorée */}
               <div className="animate-glow-gold absolute inset-0 -m-4 rounded-full" />
-              <Mascot mood="celebrating" className="relative w-28 sm:w-40 drop-shadow-2xl" />
+              <Mascot mood="celebrating" size={140} />
             </div>
             <p className="mt-3 font-pulaar text-base font-semibold tracking-widest text-cyan">
               Jaaraama 👋
@@ -187,7 +187,7 @@ export default function HomePage() {
 
         {/* Stats */}
         <div className="glass animate-fade-up grid grid-cols-2 gap-px overflow-hidden rounded-2xl sm:grid-cols-4">
-          {STATS.map((s, i) => (
+          {STATS.map((s) => (
             <div key={s.label} className="flex flex-col items-center justify-center gap-1 p-5 text-center">
               <div
                 className="font-display text-3xl font-bold text-gold"
@@ -258,7 +258,7 @@ export default function HomePage() {
                 Dès la première leçon, tu peux saluer ta famille en Pulaar.
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
-                {GLYPHS.map(([lo, up]) => (
+                {GLYPHS.map(([lo, up], _i) => (
                   <span
                     key={lo}
                     className="rounded-lg border border-cyan/25 bg-cyan/5 px-3 py-1.5 font-pulaar text-sm text-cyan/80 transition hover:bg-cyan/10"
