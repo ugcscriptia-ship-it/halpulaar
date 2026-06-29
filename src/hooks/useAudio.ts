@@ -1,19 +1,61 @@
 import { useCallback, useRef, useState } from 'react'
 
-// Lecture des enregistrements natifs. Aucun TTS (CLAUDE.md §3).
+/**
+ * Lecture audio avec fallback TTS.
+ * 1. Si `src` est fourni → tente de lire le fichier natif.
+ * 2. Si le fichier est absent (404 / erreur) → bascule sur TTS avec `ttsText`.
+ * 3. Si pas de src → TTS directement.
+ * Le badge "tts" dans AudioPlayButton avertit l'utilisateur.
+ */
 export function useAudio() {
-  const ref = useRef<HTMLAudioElement | null>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
   const [playing, setPlaying] = useState(false)
 
-  const play = useCallback((src?: string) => {
-    if (!src) return
-    if (ref.current) ref.current.pause()
-    const a = new Audio(src)
-    ref.current = a
+  const speakTts = useCallback((text: string) => {
+    if (!('speechSynthesis' in window)) return
+    window.speechSynthesis.cancel()
+    const utt = new SpeechSynthesisUtterance(text)
+    utt.lang    = 'fr-FR'
+    utt.rate    = 0.62
+    utt.pitch   = 0.88
+    utt.volume  = 1
+    utt.onstart = () => setPlaying(true)
+    utt.onend   = () => setPlaying(false)
+    utt.onerror = () => setPlaying(false)
     setPlaying(true)
-    a.onended = () => setPlaying(false)
-    a.play().catch(() => setPlaying(false))
+    window.speechSynthesis.speak(utt)
   }, [])
 
-  return { play, playing }
+  const play = useCallback((src?: string, ttsText?: string) => {
+    // Stoppe tout
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null }
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel()
+    setPlaying(false)
+
+    if (src) {
+      const a = new Audio(src)
+      audioRef.current = a
+      setPlaying(true)
+      a.onended = () => setPlaying(false)
+      // Si le fichier audio natif est absent → bascule sur TTS
+      a.onerror = () => {
+        setPlaying(false)
+        if (ttsText) speakTts(ttsText)
+      }
+      a.play().catch(() => {
+        setPlaying(false)
+        if (ttsText) speakTts(ttsText)
+      })
+    } else if (ttsText) {
+      speakTts(ttsText)
+    }
+  }, [speakTts])
+
+  const stop = useCallback(() => {
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null }
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel()
+    setPlaying(false)
+  }, [])
+
+  return { play, stop, playing }
 }
